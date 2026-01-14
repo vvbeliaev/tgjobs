@@ -47,9 +47,9 @@ func main() {
 			}
 
 			// SPA fallback (ignore API and admin routes)
-			if !strings.HasPrefix(path, "api/") && !strings.HasPrefix(path, "_/") {
-				return e.FileFS(fsys, "index.html")
-			}
+            if !strings.HasPrefix(path, "api/") && !strings.HasPrefix(path, "_/") && !strings.Contains(path, ".") {
+                return e.FileFS(fsys, "index.html")
+            }
 
 			return nil
 		})

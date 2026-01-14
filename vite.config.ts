@@ -26,10 +26,26 @@ export default defineConfig({
 				icons: [
 					{ src: '/favicon_io/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
 					{ src: '/favicon_io/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' }
+				],
+				screenshots: [
+					{
+						src: '/screenshots/mobile.png',
+						sizes: '770x1708',
+						type: 'image/png',
+						form_factor: 'narrow',
+						label: 'Job Hunter Mobile'
+					},
+					{
+						src: '/screenshots/desktop.png',
+						sizes: '3438x1946',
+						type: 'image/png',
+						form_factor: 'wide',
+						label: 'Job Hunter Desktop'
+					}
 				]
 			},
 			workbox: {
-				navigateFallbackDenylist: [/^\/api/, /^\/_/],
+				navigateFallbackDenylist: [/^\/api/, /^\/_/, /^\/favicon_io/, /^\/screenshots/],
 				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
 				runtimeCaching: [
 					{
