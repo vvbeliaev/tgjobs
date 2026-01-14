@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { jobsStore } from '../jobs.svelte';
-	import { Search, X, Filter, Globe, Briefcase } from 'lucide-svelte';
+	import { Search, X, Filter, Globe, Briefcase, Archive } from 'lucide-svelte';
 
 	let search = $state('');
 
@@ -63,13 +63,26 @@
 				/>
 			</div>
 
-			{#if jobsStore.search || jobsStore.filterGrade || jobsStore.filterRemote !== null}
+			<div
+				class="flex h-12 items-center gap-3 rounded-lg border border-base-300 bg-base-100 px-4 transition-colors hover:bg-base-200"
+			>
+				<Archive size={18} class="opacity-60" />
+				<span class="text-sm font-medium">Archived</span>
+				<input
+					type="checkbox"
+					class="toggle toggle-secondary toggle-sm"
+					bind:checked={jobsStore.showArchived}
+				/>
+			</div>
+
+			{#if jobsStore.search || jobsStore.filterGrade || jobsStore.filterRemote !== null || jobsStore.showArchived}
 				<button
 					class="btn gap-2 text-error btn-ghost btn-sm"
 					onclick={() => {
 						search = '';
 						jobsStore.filterGrade = '';
 						jobsStore.filterRemote = null;
+						jobsStore.showArchived = false;
 					}}
 				>
 					<X size={16} />

@@ -26,6 +26,7 @@
 					jobsStore.search = '';
 					jobsStore.filterGrade = '';
 					jobsStore.filterRemote = null;
+					jobsStore.showArchived = false;
 				}}
 			>
 				Reset all filters

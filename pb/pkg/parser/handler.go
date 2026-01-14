@@ -20,7 +20,6 @@ type Handler struct {
 	analyzer *llm.Analyzer
 	logger   *zap.Logger
 	filter   *KeywordFilter
-	ownerID  string
 	notifier func(ctx context.Context, text string) error
 }
 
@@ -32,11 +31,6 @@ func NewHandler(app core.App, analyzer *llm.Analyzer, logger *zap.Logger) *Handl
 		logger:   logger,
 		filter:   NewKeywordFilter(),
 	}
-}
-
-// SetOwnerID sets the default user ID for saved jobs.
-func (h *Handler) SetOwnerID(id string) {
-	h.ownerID = id
 }
 
 // SetNotifier sets the notification function (e.g., to send to Saved Messages).
@@ -76,8 +70,9 @@ func NewKeywordFilter() *KeywordFilter {
 		blacklist: []string{
 			"реклама", "продам", "куплю", "скидка", "акция",
 			"casino", "казино", "betting", "ставки", "crypto pump",
+			"#resume", "#резюме", "#cv",
 		},
-		minLength: 50, // Job postings are usually longer than 100 chars
+		minLength: 50, // Job postings are usually longer than 50 chars
 	}
 }
 
@@ -88,11 +83,11 @@ func (f *KeywordFilter) ShouldProcess(text string) bool {
 	}
 
 	lower := strings.ToLower(text)
-	// for _, kw := range f.blacklist {
-	// 	if strings.Contains(lower, kw) {
-	// 		return false
-	// 	}
-	// }
+	for _, kw := range f.blacklist {
+		if strings.Contains(lower, kw) {
+			return false
+		}
+	}
 
 	for _, kw := range f.whitelist {
 		if strings.Contains(lower, kw) {
@@ -287,7 +282,6 @@ func (h *Handler) saveJob(parsed llm.JobParsedData, originalText string, channel
 	record := core.NewRecord(collection)
 	record.Set("title", parsed.Title)
 	record.Set("company", parsed.Company)
-	record.Set("user", h.ownerID)
 	record.Set("salaryMin", parsed.SalaryMin)
 	record.Set("salaryMax", parsed.SalaryMax)
 	record.Set("currency", parsed.Currency)

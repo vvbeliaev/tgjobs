@@ -1,8 +1,19 @@
 <script lang="ts">
 	import type { JobsResponse } from '$lib';
-	import { Monitor, MapPin, Send, ExternalLink } from 'lucide-svelte';
+	import {
+		Monitor,
+		MapPin,
+		Send,
+		Archive,
+		ArchiveRestore,
+		ChevronDown,
+		ChevronUp
+	} from 'lucide-svelte';
+	import { jobsStore } from '../jobs.svelte';
+	import { slide } from 'svelte/transition';
 
 	let { job }: { job: JobsResponse } = $props();
+	let isExpanded = $state(false);
 
 	function formatSalary(min?: number, max?: number, currency?: string) {
 		if (!min && !max) return null;
@@ -44,9 +55,22 @@
 					<p class="font-medium text-base-content/60">{job.company}</p>
 				{/if}
 			</div>
-			{#if job.grade}
-				<div class="badge badge-outline badge-md">{job.grade}</div>
-			{/if}
+			<div class="flex items-center gap-2">
+				{#if job.grade}
+					<div class="badge badge-outline badge-md">{job.grade}</div>
+				{/if}
+				<button
+					class="btn btn-circle btn-ghost btn-sm"
+					onclick={() => jobsStore.toggleArchive(job.id)}
+					title={job.archived ? 'Restore' : 'Archive'}
+				>
+					{#if job.archived}
+						<ArchiveRestore size={18} class="text-success" />
+					{:else}
+						<Archive size={18} class="opacity-50 hover:opacity-100" />
+					{/if}
+				</button>
+			</div>
 		</div>
 
 		<div class="mt-4 flex flex-wrap items-center gap-3">
@@ -91,23 +115,51 @@
 			</p>
 		{/if}
 
+		{#if isExpanded}
+			<div transition:slide class="mt-4 space-y-4">
+				<div class="rounded-lg bg-base-200 p-4">
+					<h3 class="mb-2 text-xs font-bold tracking-wider uppercase opacity-50">Original Text</h3>
+					<div
+						class="max-h-96 overflow-y-auto text-sm leading-relaxed whitespace-pre-wrap opacity-90"
+					>
+						{job.originalText}
+					</div>
+				</div>
+			</div>
+		{/if}
+
 		<div class="mt-6 flex items-center justify-between border-t border-base-200 pt-4">
-			<div class="text-xs opacity-40">
-				{#if job.created}
-					{new Date(job.created).toLocaleDateString()}
+			<button
+				class="btn gap-1 opacity-50 btn-ghost btn-xs hover:opacity-100"
+				onclick={() => (isExpanded = !isExpanded)}
+			>
+				{#if isExpanded}
+					<ChevronUp size={14} />
+					Show less
+				{:else}
+					<ChevronDown size={14} />
+					Show more
+				{/if}
+			</button>
+
+			<div class="flex items-center gap-4">
+				<div class="text-xs opacity-40">
+					{#if job.created}
+						{new Date(job.created).toLocaleDateString()}
+					{/if}
+				</div>
+				{#if tgUrl}
+					<a
+						href={tgUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn gap-2 btn-sm btn-primary"
+					>
+						<Send size={14} />
+						Apply
+					</a>
 				{/if}
 			</div>
-			{#if tgUrl}
-				<a
-					href={tgUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="btn gap-2 btn-sm btn-primary"
-				>
-					<Send size={14} />
-					Apply via Telegram
-				</a>
-			{/if}
 		</div>
 	</div>
 </div>

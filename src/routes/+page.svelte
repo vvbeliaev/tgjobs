@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { userStore } from '$lib/apps/user';
 	import JobList from '$lib/apps/job/ui/JobList.svelte';
+
+	const user = $derived(userStore.user);
 </script>
 
 <div class="container mx-auto">
-	{#if userStore.user}
-		<JobList userId={userStore.user.id} />
+	{#if user}
+		<JobList />
 	{:else}
 		<div class="flex min-h-[60vh] flex-col items-center justify-center p-4 text-center">
 			<h1 class="mb-4 text-3xl font-bold">Finding your next job...</h1>

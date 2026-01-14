@@ -20,7 +20,7 @@ export async function globalUserLoad() {
 
 	try {
 		const userAuth = await userStore.load();
-		const jobs = await jobsStore.load(userAuth.record.id);
+		const jobs = await jobsStore.load();
 		return { userAuth, jobs };
 	} catch (error) {
 		console.error(error);

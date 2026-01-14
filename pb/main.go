@@ -121,25 +121,9 @@ func startTelegramParser(app *pocketbase.PocketBase, cfg parser.Config) {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
-	// Find default owner (first user in 'users' collection)
-	var ownerID string
-	userCol, err := app.FindCollectionByNameOrId("users")
-	if err == nil {
-		records, err := app.FindRecordsByFilter(userCol.Id, "id != ''", "created", 1, 0)
-		if err == nil && len(records) > 0 {
-			ownerID = records[0].Id
-			logger.Info("Setting default job owner", zap.String("user_id", ownerID))
-		}
-	}
-
-	if ownerID == "" {
-		logger.Warn("No users found in database, jobs will be saved without owner")
-	}
-
 	// Create analyzer and handler
 	analyzer := llm.NewAnalyzer("", "")
 	handler := parser.NewHandler(app, analyzer, logger)
-	handler.SetOwnerID(ownerID)
 
 	tg := parser.NewClient(cfg, logger)
 	handler.SetNotifier(tg.SendMessageToSelf)

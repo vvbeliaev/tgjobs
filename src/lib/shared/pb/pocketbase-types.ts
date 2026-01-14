@@ -94,6 +94,7 @@ export type SuperusersRecord = {
 }
 
 export type JobsRecord<Traw = unknown, Tskills = unknown> = {
+	archived?: IsoDateString
 	channelId?: string
 	company?: string
 	created: IsoAutoDateString
@@ -113,7 +114,6 @@ export type JobsRecord<Traw = unknown, Tskills = unknown> = {
 	title: string
 	updated?: IsoAutoDateString
 	url?: string
-	user?: RecordIdString
 }
 
 export type UsersRecord<Tcv = unknown> = {
