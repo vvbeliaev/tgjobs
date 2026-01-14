@@ -26,7 +26,7 @@
 	} from '$lib';
 	import { userStore } from '$lib/apps/user';
 	import { jobsStore } from '$lib/apps/job';
-	import favicon from '$lib/shared/assets/favicon.svg';
+	import favicon from '$lib/shared/assets/favicon_io/favicon.ico';
 
 	import './layout.css';
 	import PWA from './PWA.svelte';
@@ -102,7 +102,7 @@
 			<Button
 				class={[expanded ? 'justify-start' : '']}
 				color={page.url.pathname === item.href ? 'primary' : 'neutral'}
-				variant="ghost"
+				variant={page.url.pathname === item.href ? 'outline' : 'ghost'}
 				block
 				square={!expanded}
 				href={item.href}

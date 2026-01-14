@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - PUBLIC_PB_URL=${PUBLIC_PB_URL:-https://tgjobs.cogisoft.dev}
+      - PUBLIC_PB_URL=${PUBLIC_PB_URL:-https://jobhunter.cogisoft.dev}
       - PUBLIC_POSTHOG_URL=${PUBLIC_POSTHOG_URL:-https://eu.i.posthog.com}
       - PUBLIC_POSTHOG_TOKEN=${PUBLIC_POSTHOG_TOKEN:-pub}
 

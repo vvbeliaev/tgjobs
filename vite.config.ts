@@ -16,8 +16,8 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon_io/favicon.ico', 'robots.txt', 'favicon_io/apple-touch-icon.png'],
 			manifest: {
-				name: 'TG Jobs',
-				short_name: 'TG Jobs',
+				name: 'Job Hunter',
+				short_name: 'Job Hunter',
 				start_url: '/',
 				scope: '/',
 				display: 'standalone',

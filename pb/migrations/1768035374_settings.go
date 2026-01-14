@@ -11,8 +11,8 @@ func init() {
 
         // for all available settings fields you could check
         // https://github.com/pocketbase/pocketbase/blob/develop/core/settings_model.go#L121-L130
-        settings.Meta.AppName = "TG Jobs"
-        settings.Meta.AppURL = "https://tgjobs.cogisoft.dev"
+        settings.Meta.AppName = "Job Hunter"
+        settings.Meta.AppURL = "https://jobhunter.cogisoft.dev"
         settings.Logs.MaxDays = 2
         settings.Logs.LogAuthId = true
         settings.Logs.LogIP = false
