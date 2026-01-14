@@ -21,6 +21,7 @@ type Handler struct {
 	logger   *zap.Logger
 	filter   *KeywordFilter
 	notifier func(ctx context.Context, text string) error
+	ownerID  string
 }
 
 // NewHandler creates a new message handler.
@@ -31,6 +32,11 @@ func NewHandler(app core.App, analyzer *llm.Analyzer, logger *zap.Logger) *Handl
 		logger:   logger,
 		filter:   NewKeywordFilter(),
 	}
+}
+
+// SetOwnerID sets the default owner for new job records.
+func (h *Handler) SetOwnerID(ownerID string) {
+	h.ownerID = ownerID
 }
 
 // SetNotifier sets the notification function (e.g., to send to Saved Messages).
@@ -294,6 +300,9 @@ func (h *Handler) saveJob(parsed llm.JobParsedData, originalText string, channel
 	record.Set("messageId", msgID)
 	record.Set("hash", hash)
 	record.Set("raw", rawMsg)
+	if h.ownerID != "" {
+		record.Set("owner", h.ownerID)
+	}
 
 	url := fmt.Sprintf("https://t.me/c/%d/%d", channelID, msgID)
 	record.Set("url", url)

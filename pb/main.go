@@ -121,9 +121,22 @@ func startTelegramParser(app *pocketbase.PocketBase, cfg parser.Config) {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
+	// Find the admin user (where guest is empty) to set as owner of new jobs
+	ownerID := ""
+	users, err := app.FindRecordsByFilter("users", "guest = ''", "created", 1, 0)
+	if err == nil && len(users) > 0 {
+		ownerID = users[0].Id
+		logger.Info("Found admin user for job ownership", zap.String("id", ownerID))
+	} else {
+		logger.Warn("Could not find admin user (guest = '') for job ownership")
+	}
+
 	// Create analyzer and handler
 	analyzer := llm.NewAnalyzer("", "")
 	handler := parser.NewHandler(app, analyzer, logger)
+	if ownerID != "" {
+		handler.SetOwnerID(ownerID)
+	}
 
 	tg := parser.NewClient(cfg, logger)
 	handler.SetNotifier(tg.SendMessageToSelf)
