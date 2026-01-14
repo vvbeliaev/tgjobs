@@ -12,7 +12,7 @@ services:
       - PB_PASSWORD=${PB_PASSWORD}
 
       - TG_API_ID=${TG_API_ID}
-      - TG_API_HASH=${TG_APP_HASH}
+      - TG_API_HASH=${TG_API_HASH}
 
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_BASE_URL=${OPENAI_BASE_URL}
