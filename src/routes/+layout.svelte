@@ -1,6 +1,15 @@
 <script lang="ts">
 	import posthog from 'posthog-js';
-	import { House, Search, CalendarDays, Settings, LogIn, PanelRight, Menu } from 'lucide-svelte';
+	import {
+		House,
+		Search,
+		CalendarDays,
+		Settings,
+		LogIn,
+		PanelRight,
+		Menu,
+		Github
+	} from 'lucide-svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { page } from '$app/state';
 
@@ -128,7 +137,20 @@
 		</div>
 	{/if}
 
-	<div class={['mb-1 border-base-300', expanded ? 'px-2' : 'flex justify-center']}>
+	<div class={['mb-3 flex flex-col border-base-300', expanded ? 'px-2' : 'items-center gap-3']}>
+		<a
+			href="https://github.com/vvbeliaev/tgjobs"
+			target="_blank"
+			rel="noopener noreferrer"
+			class={['btn btn-ghost', expanded ? 'btn-block justify-start gap-2 px-4' : 'btn-square']}
+			title="View on GitHub"
+		>
+			<Github class={expanded ? 'size-5' : 'size-8'} />
+			{#if expanded}
+				<span>GitHub</span>
+			{/if}
+		</a>
+
 		<ThemeController {expanded} navStyle />
 	</div>
 
@@ -213,6 +235,12 @@
 
 		<!-- Mobile Dock -->
 		<div class="dock dock-sm border-t border-base-300 md:hidden">
+			<!-- Hidden for now -->
+			<button onclick={() => uiStore.setSidebarOpen(true)}>
+				<Menu class="size-5" />
+				<span class="dock-label">Menu</span>
+			</button>
+
 			{#each nav as item}
 				<a href={item.href} class:dock-active={page.url.pathname === item.href}>
 					<item.icon class="size-5" />
@@ -231,16 +259,6 @@
 					<span class="dock-label">Log In</span>
 				</a>
 			{/if}
-
-			<!-- Hidden for now -->
-			<button class="hidden" onclick={() => uiStore.toggleRightSidebar()}>
-				<PanelRight class="size-5" />
-				<span class="dock-label">Panel</span>
-			</button>
-			<button class="hidden" onclick={() => uiStore.setSidebarOpen(true)}>
-				<Menu class="size-5" />
-				<span class="dock-label">Menu</span>
-			</button>
 		</div>
 	</div>
 {/await}
