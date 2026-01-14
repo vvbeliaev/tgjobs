@@ -88,20 +88,20 @@
        Dark Mode:
        Увеличен контраст между слоями, чтобы интерфейс не был "плоским серым пятном".
     */
-	--color-base-100: oklch(22% 0.02 240); /* Карточки */
-	--color-base-200: oklch(18% 0.02 240); /* Фон */
-	--color-base-300: oklch(30% 0.02 240); /* Границы (светлее фона) */
-	--color-base-content: oklch(95% 0.01 240);
+	--color-base-100: oklch(14% 0 0); /* Карточки */
+	--color-base-200: oklch(10% 0 0); /* Фон */
+	--color-base-300: oklch(20% 0 0); /* Границы */
+	--color-base-content: oklch(90% 0 0);
 
-	--color-primary: oklch(90% 0 0); /* Белый для кнопок в темной теме */
-	--color-primary-content: oklch(20% 0.05 240);
+	--color-primary: oklch(98% 0 0); /* Почти белый для кнопок в темной теме */
+	--color-primary-content: oklch(10% 0 0);
 
 	/* Neutral в темной теме тоже делаем отчетливым */
-	--color-neutral: oklch(40% 0.02 240);
-	--color-neutral-content: oklch(95% 0 0);
+	--color-neutral: oklch(25% 0 0);
+	--color-neutral-content: oklch(90% 0 0);
 
-	--color-secondary: oklch(35% 0.02 240);
-	--color-secondary-content: oklch(90% 0 0);
+	--color-secondary: oklch(20% 0 0);
+	--color-secondary-content: oklch(85% 0 0);
 
 	--color-accent: oklch(70% 0.15 45);
 	--color-accent-content: oklch(15% 0 0);

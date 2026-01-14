@@ -16,7 +16,7 @@
 
 			<!-- Heart icon wrapper with animation -->
 			<div class="relative">
-				<span class="text-center text-[5rem] font-bold text-primary">Job Hunter</span>
+				<span class="text-center text-[4rem] font-bold text-primary">Job Hunter</span>
 			</div>
 		</div>
 
