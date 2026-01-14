@@ -22,7 +22,7 @@ export default defineConfig({
 				scope: '/',
 				display: 'standalone',
 				background_color: '#ecf3f8',
-				theme_color: '#0000',
+				theme_color: '#000000',
 				icons: [
 					{ src: '/favicon_io/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
 					{ src: '/favicon_io/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' }
