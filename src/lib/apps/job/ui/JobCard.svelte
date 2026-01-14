@@ -120,7 +120,7 @@
 				<div class="rounded-lg bg-base-200 p-4">
 					<h3 class="mb-2 text-xs font-bold tracking-wider uppercase opacity-50">Original Text</h3>
 					<div
-						class="max-h-96 overflow-y-auto text-sm leading-relaxed whitespace-pre-wrap opacity-90"
+						class="max-h-148 overflow-y-auto text-sm leading-relaxed whitespace-pre-wrap opacity-90"
 					>
 						{job.originalText}
 					</div>

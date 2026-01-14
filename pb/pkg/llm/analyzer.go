@@ -22,8 +22,6 @@ type JobParsedData struct {
 	Grade       string   `json:"grade"`       // Junior, Middle, Senior, Lead, etc.
 	Location    string   `json:"location"`    // Office location if mentioned
 	Description string   `json:"description"` // Brief job description
-
-	IsJob bool `json:"isJob"` // True if the text is a job posting
 }
 
 func (j JobParsedData) Schema() *jsonschema.Definition {
@@ -44,10 +42,10 @@ type Analyzer struct {
 // If apiKey or baseURL are empty, it reads from LITELLM_API_KEY and LITELLM_URL environment variables.
 func NewAnalyzer(apiKey, baseURL string) *Analyzer {
 	if apiKey == "" {
-		apiKey = os.Getenv("LITELLM_API_KEY")
+		apiKey = os.Getenv("OPENAI_API_KEY")
 	}
 	if baseURL == "" {
-		baseURL = os.Getenv("LITELLM_URL")
+		baseURL = os.Getenv("OPENAI_BASE_URL")
 	}
 
 	config := openai.DefaultConfig(apiKey)
@@ -73,8 +71,6 @@ IMPORTANT RULES:
 6. Extract required skills/technologies as a list of short keywords.
 7. Determine job grade from context clues (Junior/Middle/Senior/Lead/Principal).
 8. Set isRemote to true if remote work, WFH, or distributed team is mentioned.
-
-9. Set isJob to true if the text is a job posting. Set to false if this is random message, advertisement, news, or someone's resume.
 
 Always respond with valid JSON matching the schema exactly.`
 

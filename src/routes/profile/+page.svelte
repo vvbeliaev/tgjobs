@@ -24,7 +24,7 @@
 	<div class={['mx-auto max-w-xl space-y-4']}>
 		<ProfileCard />
 
-		<LegalCard />
+		<!-- <LegalCard /> -->
 
 		<Button class="mt-2 w-full" onclick={logout} variant="soft" color="error">
 			<X class="mr-2 h-4 w-4" />
