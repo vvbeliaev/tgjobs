@@ -70,8 +70,8 @@ func main() {
 			cv := authRecord.Get("cv")
 			cvBytes, _ := json.Marshal(cv)
 
-			analyzer := llm.NewAnalyzer("", "")
-			offer, err := analyzer.GenerateOffer(e.Request.Context(), string(cvBytes), job.GetString("description")+"\n"+job.GetString("originalText"))
+			offerGenerator := llm.NewOfferGenerator("", "")
+			offer, err := offerGenerator.GenerateOffer(e.Request.Context(), string(cvBytes), job.GetString("description")+"\n"+job.GetString("originalText"))
 			if err != nil {
 				return e.InternalServerError("Failed to generate offer", err)
 			}
@@ -130,10 +130,10 @@ func main() {
 			logger, _ := zap.NewProduction()
 			defer logger.Sync()
 
-			analyzer := llm.NewAnalyzer("", "")
+			extractor := llm.NewExtractor("", "")
 			originalText := record.GetString("originalText")
 
-			parsed, err := analyzer.AnalyzeVacancy(context.Background(), originalText)
+			parsed, err := extractor.AnalyzeVacancy(context.Background(), originalText)
 			if err != nil {
 				logger.Error("LLM analysis failed", zap.Error(err), zap.String("jobId", record.Id))
 				return
