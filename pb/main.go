@@ -61,6 +61,7 @@ func main() {
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		Automigrate: isGoRun,
+		Dir: "migrations",
 	})
 
 	// --- Telegram Integration ---
