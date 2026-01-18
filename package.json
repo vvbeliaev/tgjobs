@@ -20,6 +20,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
 		"@eslint/js": "^9.39.1",
+		"@fontsource/ibm-plex-mono": "^5.2.7",
 		"@fontsource/inter": "^5.2.8",
 		"@fontsource/outfit": "^5.2.8",
 		"@playwright/test": "^1.57.0",

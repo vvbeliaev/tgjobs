@@ -1,133 +1,407 @@
-@import 'tailwindcss';
-@plugin '@tailwindcss/forms';
+@import "tailwindcss";
+/* @plugin '@tailwindcss/forms'; */
 @plugin '@tailwindcss/typography';
+
 @plugin 'daisyui';
-
-/* Fonts */
-@import '@fontsource/outfit';
-@import '@fontsource/inter';
-
-@theme {
-	--font-sans: 'Inter', ui-sans-serif, system-ui;
-	--font-display: 'Outfit', ui-sans-serif, system-ui;
-}
 
 @custom-variant dark (&:where([data-theme=DARK], [data-theme=DARK] *));
 
+@import "@fontsource/ibm-plex-mono";
+@import "@fontsource/outfit";
+/* @import "@fontsource/space-grotesk"; */
+/* @import "@fontsource/space-mono"; */
+
 @plugin 'daisyui/theme' {
-	name: 'LIGHT';
-	default: true;
-	prefersdark: false;
-	color-scheme: 'light';
+  name: "LIGHT";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
 
-	/* 
-       Base Colors:
-       100: Белый (карточки)
-       200: Светло-серый (фон страницы/сайдбар) - сделал чуть плотнее (96%), чтобы был виден контраст с белым.
-       300: Границы/Borders - сделал 89% (серый), чтобы линии были четкими.
-    */
-	--color-base-100: oklch(100% 0 0);
-	--color-base-200: oklch(96% 0.01 240);
-	--color-base-300: oklch(89% 0.01 240); /* Четкие границы */
+  --color-base-100: oklch(98% 0 0);
+  --color-base-200: oklch(95% 0 0);
+  --color-base-300: oklch(90% 0 0);
+  --color-base-content: oklch(15% 0 0);
 
-	/* Текст: Насыщенный черный для максимальной читаемости */
-	--color-base-content: oklch(20% 0.03 240);
+  --color-primary: oklch(60% 0.18 240);
+  --color-primary-content: oklch(100% 0 0);
 
-	/* 
-       Primary: "PocketBase Black"
-       Используется для главной кнопки (New Record).
-    */
-	--color-primary: oklch(20% 0 0);
-	--color-primary-content: oklch(100% 0 0);
+  --color-secondary: oklch(65% 0.15 200);
+  --color-secondary-content: oklch(15% 0.05 200);
 
-	/* 
-       Secondary: Используем для выделения, чуть светлее Primary
-    */
-	--color-secondary: oklch(40% 0 0);
-	--color-secondary-content: oklch(98% 0 0);
-
-	/* 
-       Neutral: ИСПРАВЛЕНО
-       Раньше был 95% (почти белый), теперь 45% (серый асфальт).
-       Кнопки btn-neutral теперь будут иметь видимый серый фон.
-    */
-	--color-neutral: oklch(45% 0.02 260);
-	--color-neutral-content: oklch(98% 0 0);
-
-	/* Accent: Оранжевый PB */
-	--color-accent: oklch(65% 0.18 45);
+  --color-accent: oklch(65% 0.18 45);
 	--color-accent-content: oklch(15% 0 0);
 
-	/* 
-       Status Colors:
-       Сделал их чуть более насыщенными, чтобы бейджики не выглядели блекло.
-    */
-	--color-info: oklch(65% 0.15 240);
-	--color-success: oklch(70% 0.15 150); /* Зеленый потемнее для лучшей читаемости */
-	--color-warning: oklch(80% 0.15 85);
-	--color-error: oklch(65% 0.2 25);
+  --color-neutral: oklch(20% 0 0);
+  --color-neutral-content: oklch(98% 0 0);
 
-	/* Геометрия: строгая, "административная" */
-	--radius-selector: 0.375rem;
-	--radius-field: 0.375rem;
-	--radius-box: 0.375rem;
-	--size-selector: 0.25rem;
-	--size-field: 0.25rem;
-	--border: 1px;
-	--depth: 0;
-	--noise: 0;
+  --color-info: oklch(70% 0.15 240);
+  --color-info-content: oklch(98% 0.02 240);
+
+  --color-success: oklch(75% 0.18 150);
+  --color-success-content: oklch(20% 0.05 150);
+
+  --color-warning: oklch(85% 0.18 85);
+  --color-warning-content: oklch(20% 0.05 85);
+
+  --color-error: oklch(65% 0.22 25);
+  --color-error-content: oklch(98% 0.02 25);
+
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.375rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 @plugin 'daisyui/theme' {
-	name: 'DARK';
-	default: false;
-	prefersdark: true;
-	color-scheme: 'dark';
+  name: "DARK";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
 
-	/* 
-       Dark Mode:
-       Увеличен контраст между слоями, чтобы интерфейс не был "плоским серым пятном".
-    */
-	--color-base-100: oklch(14% 0 0); /* Карточки */
-	--color-base-200: oklch(10% 0 0); /* Фон */
-	--color-base-300: oklch(20% 0 0); /* Границы */
-	--color-base-content: oklch(90% 0 0);
+  --color-base-100: oklch(10% 0 0);
+  --color-base-200: oklch(12% 0 0);
+  --color-base-300: oklch(15% 0 0);
+  --color-base-content: oklch(90% 0 0);
 
-	--color-primary: oklch(98% 0 0); /* Почти белый для кнопок в темной теме */
-	--color-primary-content: oklch(10% 0 0);
+  --color-primary: oklch(70% 0.18 240);
+  --color-primary-content: oklch(10% 0 0);
 
-	/* Neutral в темной теме тоже делаем отчетливым */
-	--color-neutral: oklch(25% 0 0);
-	--color-neutral-content: oklch(90% 0 0);
+  --color-secondary: oklch(75% 0.15 200);
+  --color-secondary-content: oklch(10% 0.05 200);
 
-	--color-secondary: oklch(20% 0 0);
-	--color-secondary-content: oklch(85% 0 0);
+  --color-accent: oklch(70% 0.15 45);
+  --color-accent-content: oklch(15% 0 0);
 
-	--color-accent: oklch(70% 0.15 45);
-	--color-accent-content: oklch(15% 0 0);
+  --color-neutral: oklch(25% 0 0);
+  --color-neutral-content: oklch(90% 0 0);
 
-	--color-success: oklch(60% 0.15 150);
+  --color-info: oklch(75% 0.15 240);
+  --color-info-content: oklch(10% 0.05 240);
 
-	--radius-selector: 0.375rem;
-	--radius-field: 0.375rem;
-	--radius-box: 0.375rem;
-	--border: 1px;
-	--depth: 0;
+  --color-success: oklch(60% 0.15 150);
+  --color-success-content: oklch(10% 0.05 150);
+
+  --color-warning: oklch(85% 0.18 85);
+  --color-warning-content: oklch(10% 0.05 85);
+
+  --color-error: oklch(70% 0.22 25);
+  --color-error-content: oklch(10% 0.05 25);
+
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.375rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
-body {
-	font-family: var(--font-sans);
-	background-color: var(--color-base-200);
-	color: var(--color-base-content);
+
+@theme {
+	--font-display: "Outfit", sans-serif;
+	--font-mono: "IBM Plex Mono", monospace;
+  /* --font-display: "Space Grotesk", sans-serif; */
+  /* --font-mono: "Space Mono", monospace; */
 }
 
+/* Custom Utilities */
+@utility card-terminal {
+  @apply border border-base-content/20 bg-base-100 shadow-none rounded-md;
+}
+
+@utility text-mono {
+  font-family: var(--font-mono);
+}
+
+@utility btn-glow {
+  @apply btn btn-primary border-0 text-primary-content relative overflow-hidden;
+  background-size: 200% auto;
+  background-image: linear-gradient(
+    45deg,
+    var(--color-primary) 0%,
+    var(--color-accent) 50%,
+    var(--color-primary) 100%
+  );
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 20px -5px color-mix(in oklch, var(--color-primary), transparent
+        70%);
+}
+
+.btn-glow:hover {
+  background-position: right center;
+  box-shadow: 0 15px 30px -10px color-mix(in oklch, var(--color-primary), transparent
+        50%);
+  transform: translateY(-2px);
+}
+
+.btn-glow:active {
+  transform: translateY(0);
+}
+
+@utility glass-panel {
+  @apply backdrop-blur-xl bg-base-100/60 border border-base-content/10 shadow-xl;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px
+      color-mix(in oklch, var(--color-base-content), transparent 90%);
+}
+
+/* Apply fonts */
 h1,
 h2,
 h3,
 h4,
 h5,
-h6,
-.font-display {
-	font-family: var(--font-display);
-	font-weight: 600;
+h6 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+body {
+  font-family: var(--font-mono);
+}
+
+/* EFFECTS */
+@utility glass {
+  @apply backdrop-blur-md bg-base-200/40 border-2 border-base-content/10 shadow-none;
+  border-radius: var(--radius-box);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+@utility glass-card {
+  @apply glass p-6 transition-colors duration-200 hover:bg-base-200/55;
+}
+/* Geometric Background Pattern */
+@utility bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: linear-gradient(
+      to right,
+      var(--color-base-content) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--color-base-content) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
+  opacity: 0.1;
+}
+
+.geometric-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary),
+    transparent
+  );
+  opacity: 0.3;
+}
+
+@utility animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-in {
+  animation: float-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* 1. Эффект панели прибора (Hard Panel) */
+@utility panel-industrial {
+  @apply border-2 border-base-content/10 bg-base-200 rounded-none shadow-none;
+}
+
+/* 2. Эффект терминала (Scanlines - опционально) */
+@utility bg-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 2px,
+    transparent 7px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.08;
+}
+
+/* 2b. Виньетка для "центра управления" */
+@utility bg-vignette {
+  background-image: radial-gradient(
+    circle at 50% 30%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 55%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  pointer-events: none;
+}
+
+/* 3. Индикатор статуса (светящаяся точка) */
+@utility led-indicator {
+  @apply w-2 h-2 rounded-full inline-block mr-2 shadow-[0_0_8px_currentColor];
+}
+
+/* 4. Текст как на дисплее */
+@utility text-display {
+  font-family: var(--font-mono);
+  @apply tracking-wider uppercase opacity-80;
+}
+
+@utility bg-brushed {
+  background-image: linear-gradient(
+    180deg,
+    oklch(22% 0.03 250) 0%,
+    oklch(18% 0.03 250) 100%
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+@utility inset-slot {
+  @apply bg-base-300 border border-black/20;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* 5. Эффект сетки (Grid Overlay) */
+/* Делает интерфейс похожим на инженерный софт */
+@utility bg-grid-tech {
+  background-size: 20px 20px;
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+@utility text-magic {
+  @apply text-transparent bg-clip-text font-bold;
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 50%,
+    var(--color-accent) 100%
+  );
+}
+
+/* 7. Noise utility (используем слоями, а не на body) */
+@utility bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* 6. Декоративные "Болты" (Rivets) */
+/* Добавляет маленькие точки по углам карточки */
+@utility card-riveted {
+  @apply relative border-2 border-base-content/10 bg-base-200 p-6 rounded-none;
+}
+@utility rivet-accent {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-base-content);
+  opacity: 0.3;
+}
+
+/* Prose (Typography) Overrides for a Minimalist Look */
+.prose {
+  --tw-prose-body: var(--color-base-content);
+  --tw-prose-headings: var(--color-base-content);
+  --tw-prose-lead: var(--color-base-content);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-base-content);
+  --tw-prose-counters: var(--color-base-content);
+  --tw-prose-bullets: var(--color-base-content);
+  --tw-prose-hr: color-mix(
+    in oklch,
+    var(--color-base-content),
+    transparent 90%
+  );
+  --tw-prose-quotes: var(--color-base-content);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-captions: var(--color-base-content);
+  --tw-prose-code: var(--color-base-content);
+  --tw-prose-pre-code: inherit;
+  --tw-prose-pre-bg: var(--color-base-200);
+  --tw-prose-th-borders: color-mix(
+    in oklch,
+    var(--color-base-content),
+    transparent 80%
+  );
+  --tw-prose-td-borders: color-mix(
+    in oklch,
+    var(--color-base-content),
+    transparent 90%
+  );
+}
+
+.prose :where(code):not(:where([class~="not-prose"] *)):before,
+.prose :where(code):not(:where([class~="not-prose"] *)):after {
+  content: "" !important;
+}
+
+.prose :where(pre):not(:where([class~="not-prose"] *)) {
+  background-color: var(--color-base-200) !important;
+  border: 1px solid
+    color-mix(in oklch, var(--color-base-content), transparent 85%) !important;
+  overflow-x: auto !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 1.5rem !important;
+  border-radius: var(--radius-box) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+}
+
+.prose :where(pre code):not(:where([class~="not-prose"] *)) {
+  background-color: transparent !important;
+  padding: 0 !important;
+  display: block;
+  min-width: 100%;
+  font-family: var(--font-mono);
+  color: var(--color-base-content) !important;
+  font-weight: 400 !important;
+}
+
+/* Remove background colors from code tokens, but keep syntax highlighting colors */
+.prose :where(pre code span):not(:where([class~="not-prose"] *)),
+.prose :where(pre span):not(:where([class~="not-prose"] *)) {
+  background-color: transparent !important;
+  background: transparent !important;
+  opacity: 1 !important;
 }
