@@ -7,61 +7,43 @@
 		class="animate-gradient-shift absolute inset-0 bg-linear-to-br from-primary/5 via-accent/5 to-secondary/5"
 	></div>
 
-	<!-- Main heart container -->
+	<!-- Main content container -->
 	<div class="relative z-10 flex flex-col items-center justify-center">
-		<!-- Pulsing heart with glow effect -->
-		<div class="relative">
-			<!-- Glow effect -->
-			<div class="animate-heartbeat-glow absolute inset-0 rounded-full bg-accent/30 blur-2xl"></div>
-
-			<!-- Heart icon wrapper with animation -->
-			<div class="relative">
-				<span class="text-center text-[4rem] font-bold text-primary">Job Hunter</span>
-			</div>
-		</div>
-
-		<!-- Loading text with fade animation -->
-		<h1
-			class="animate-fade-in-up mt-10 text-center text-4xl font-semibold text-base-content drop-shadow-sm"
-		>
-			Loading app...
-		</h1>
-
-		<!-- Subtle loading dots with improved animation -->
-		<div class="mt-6 flex gap-3">
+		<!-- Subtle loading dots -->
+		<div class="flex gap-3">
 			<div
-				class="animate-dot-pulse h-3 w-3 rounded-full bg-accent shadow-sm"
+				class="animate-dot-pulse h-2.5 w-2.5 rounded-full bg-accent/60 shadow-sm"
 				style="animation-delay: 0s;"
 			></div>
 			<div
-				class="animate-dot-pulse h-3 w-3 rounded-full bg-primary shadow-sm"
+				class="animate-dot-pulse h-2.5 w-2.5 rounded-full bg-primary/60 shadow-sm"
 				style="animation-delay: 0.2s;"
 			></div>
 			<div
-				class="animate-dot-pulse h-3 w-3 rounded-full bg-secondary shadow-sm"
+				class="animate-dot-pulse h-2.5 w-2.5 rounded-full bg-secondary/60 shadow-sm"
 				style="animation-delay: 0.4s;"
 			></div>
 		</div>
 	</div>
+
+	<!-- Bottom footer -->
+	<div class="animate-fade-in-up absolute bottom-10 z-10">
+		<a
+			href="https://cogisoft.dev"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="group text-xs tracking-widest text-base-content/30 transition-all duration-500 hover:text-base-content/60"
+		>
+			made by <span class="font-medium">cogisoft.dev</span>
+		</a>
+	</div>
 </div>
 
 <style>
-	@keyframes heartbeat-glow {
-		0%,
-		100% {
-			opacity: 0.3;
-			transform: scale(1);
-		}
-		50% {
-			opacity: 0.5;
-			transform: scale(1.2);
-		}
-	}
-
 	@keyframes fade-in-up {
 		from {
 			opacity: 0;
-			transform: translateY(24px);
+			transform: translateY(12px);
 		}
 		to {
 			opacity: 1;
@@ -72,12 +54,12 @@
 	@keyframes dot-pulse {
 		0%,
 		100% {
-			opacity: 0.4;
-			transform: scale(0.9);
+			opacity: 0.3;
+			transform: scale(0.95);
 		}
 		50% {
 			opacity: 1;
-			transform: scale(1.15);
+			transform: scale(1.1);
 		}
 	}
 
@@ -91,20 +73,16 @@
 		}
 	}
 
-	.animate-heartbeat-glow {
-		animation: heartbeat-glow 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-	}
-
 	.animate-fade-in-up {
-		animation: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+		animation: fade-in-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 	}
 
 	.animate-dot-pulse {
-		animation: dot-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+		animation: dot-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 	}
 
 	.animate-gradient-shift {
 		background-size: 200% 200%;
-		animation: gradient-shift 8s ease infinite;
+		animation: gradient-shift 12s ease infinite;
 	}
 </style>

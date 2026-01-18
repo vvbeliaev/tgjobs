@@ -134,7 +134,7 @@
 
 				{#if job.skills && Array.isArray(job.skills)}
 					<div class="flex flex-wrap gap-2">
-						{#each job.skills.slice(0, 5) as skill}
+						{#each job.skills.slice(0, 5) as skill (skill)}
 							<span class="text-xs opacity-50 before:mr-1 before:content-['#']">
 								{skill}
 							</span>
@@ -192,15 +192,15 @@
 				>
 					{#if isExpanded}
 						<ChevronUp size={14} />
-						Show less
+						<span class="hidden md:inline">Show less</span>
 					{:else}
 						<ChevronDown size={14} />
-						Show more
+						<span class="hidden md:inline">Show more</span>
 					{/if}
 				</button>
 
 				<div class="flex items-center gap-2">
-					<div class="mr-2 text-xs opacity-40">
+					<div class="mr-2 hidden text-xs opacity-40 sm:block">
 						{#if job.created}
 							{new Date(job.created).toLocaleDateString()}
 						{/if}
@@ -212,19 +212,20 @@
 						color="primary"
 						onclick={generateOffer}
 						disabled={isGenerating}
+						class="max-md:btn-square"
 					>
 						{#if isGenerating}
 							<span class="loading loading-xs loading-spinner"></span>
 						{:else}
-							<Sparkles size={14} class="mr-1" />
-							{offerText ? 'Regenerate' : 'Gen Offer'}
+							<Sparkles size={14} class="md:mr-1" />
+							<span class="hidden md:inline">{offerText ? 'Regenerate' : 'Gen Offer'}</span>
 						{/if}
 					</Button>
 
 					{#if tgUrl}
-						<Button onclick={handleApply} size="sm" color="primary">
-							<Send size={14} class="mr-1" />
-							Apply
+						<Button onclick={handleApply} size="sm" color="primary" class="max-md:btn-square">
+							<Send size={14} class="md:mr-1" />
+							<span class="hidden md:inline">Apply</span>
 						</Button>
 					{/if}
 				</div>
