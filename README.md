@@ -1,135 +1,56 @@
-<!-- LOGO PLACEHOLDER - Replace with your logo or delete -->
-<p align="center">
-  <img src="https://via.placeholder.com/150?text=SVPB" alt="SVPB Template Logo" width="120" height="120"/>
-</p>
+# JobHunter 🕵️‍♂️
 
-<h1 align="center">⚡️ svpb-tmpl</h1>
+Automated job search via Telegram. This project listens to your Telegram channels and chats, filters messages using keywords, extracts structured vacancy data via LLM, and helps generate personalized "first touch" messages.
 
-<p align="center">
-  The <b>"Bleeding Edge"</b> Fullstack Boilerplate: Svelte 5 + PocketBase (Go) + Tailwind 4.
-  <br/>
-  <i>Built for Indie Hackers who want to ship fast and stay independent.</i>
-</p>
+## How It Works
 
-<!-- BADGES -->
-<p align="center">
-  <a href="https://cogisoft.dev"><img src="https://img.shields.io/badge/maintained%20by-Cogisoft.dev-blueviolet?style=flat-square&logo=dev.to" alt="Maintained by Cogisoft"></a>
-  <img src="https://img.shields.io/badge/Svelte-5_Runes-orange?style=flat-square&logo=svelte" alt="Svelte 5">
-  <img src="https://img.shields.io/badge/Backend-Go_%2B_PocketBase-00ADD8?style=flat-square&logo=go" alt="Go Backend">
-  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
-</p>
+1.  **Collector**: A `gotd`-based userbot that listens to all incoming messages in your Telegram account.
+2.  **Filtering**: Messages pass through a fast keyword filter (Go).
+3.  **Job Module**:
+    *   **Extraction**: LLM (GPT) analyzes the text to determine if it's a vacancy and extracts: title, company, salary, skills, grade, etc.
+    *   **Offer Generation**: Generates a personalized cold message based on your CV (provided in JSON) and the vacancy description.
+4.  **PocketBase**: Serves as the admin UI, database (SQLite), and API for the frontend.
 
-<p align="center">
-  <a href="#-quick-start">🚀 Quick Start</a> •
-  <a href="#-features">✨ Features</a> •
-  <a href="#-expert-services--consulting">💼 Hire the Experts</a>
-</p>
+## Quick Start
 
----
-
-## 🧐 Why this stack?
-
-**svpb-tmpl** is opinionated. It rejects the complexity of modern "Enterprisey" frameworks in favor of raw speed and portability.
-
-- **Single Binary Deploy:** The entire app (Frontend + Backend) compiles into one executable file. No Docker hell, no complex CI/CD. Copy to server -> Run.
-- **Go Performance:** Unlike standard PocketBase, this template uses PB as a **Go framework**. Write your complex business logic in Go, not JavaScript hooks.
-- **Next-Gen UI:** Leverages **Svelte 5 Runes** (`$state`, `$derived`) and **Tailwind 4** for a developer experience that feels like magic.
-
-## ✨ Features
-
-- 🔥 **Frontend:** [Svelte 5](https://svelte.dev) (SPA mode) for maximum reactivity.
-- 🐹 **Backend:** [PocketBase](https://pocketbase.io) extended with **Go**.
-- 🎨 **Styling:** [Tailwind CSS 4](https://tailwindcss.com) + [DaisyUI 5](https://daisyui.com).
-- 🛡️ **Type Safety:** End-to-end typing with `pocketbase-typegen`.
-- 📱 **PWA Ready:** Offline support & installable via `vite-pwa`.
-- 📈 **Analytics:** Pre-configured [PostHog](https://posthog.com) integration.
-- 🐳 **Production Ready:** Optimized Dockerfile included (or just run the binary!).
-
----
-
-## 💼 Expert Services & Consulting
-
-This template is maintained by me at **[Cogisoft](https://cogisoft.dev)**. I specialize in building high-performance web applications using this exact stack.
-
-**Need help building your product?**
-I help Indie Hackers and Startups with:
-
-- 🚀 **MVP Development:** We build your product from 0 to 1 using this template.
-- ⚙️ **Custom Go Logic:** Complex backend features that standard PocketBase can't handle.
-- ☁️ **Managed Hosting:** Don't want to manage servers? We host and maintain your instances.
-
-👉 **[Get a quote from Cogisoft](https://cogisoft.dev/contact)**
-
----
-
-## 🚀 Quick Start
-
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/vvbeliaev/svpb-tmpl.git
-cd svpb-tmpl
-pnpm install
+### 1. Environment Setup
+Create a `.env` file in the project root (next to `pb/`):
+```env
+TG_API_ID=your_id
+TG_API_HASH=your_hash
+TG_PHONE=+1234567890
+OPENAI_API_KEY=sk-...
+OPENAI_BASE_URL=https://api.openai.com/v1 # Optional
 ```
 
-### 2. Backend Setup (Go)
-
-Ensure you have [Go 1.23+](https://go.dev) installed.
-
+### 2. Prepare PocketBase
+Navigate to `pb/` and start the server:
 ```bash
-cd pb
-go run main.go serve
+go run . serve
+```
+Access the admin UI (`http://127.0.0.1:8090/_/`) and create an admin account.
+
+### 3. Telegram Authorization
+You need to create a session once:
+```bash
+go run . tg-login
+```
+Enter the code from Telegram. This generates `session.json` (git-ignored).
+
+### 4. Run
+```bash
+go run . serve
 ```
 
-_Admin UI: `http://127.0.0.1:8090/_/`\_
+## Technologies
 
-### 3. Frontend Development
+*   **Backend**: Go + PocketBase
+*   **Telegram**: `gotd/td` (MTProto)
+*   **AI**: OpenAI API
+*   **Frontend**: Svelte 5 + Tailwind 4 (located in `src/`)
 
-Open a new terminal in the root directory:
-
-```bash
-pnpm dev
-```
-
-_App URL: `http://localhost:5173`_
-
-## 🛠 Project Structure
-
-An organized monorepo structure for clarity:
-
-| Path              | Description                                                    |
-| :---------------- | :------------------------------------------------------------- |
-| `pb/`             | **Backend Core.** Custom Go migrations, hooks, and API routes. |
-| `src/routes/`     | **Frontend Pages.** SvelteKit routing (SPA mode).              |
-| `src/lib/apps/`   | **Domain Logic.** Isolated features (e.g., `user`, `billing`). |
-| `src/lib/shared/` | **UI Kit.** Reusable components and utilities.                 |
-
-## 📦 Building for Production
-
-Experience the power of the **Single Binary Architecture**:
-
-1.  **Build Frontend:**
-
-    ```bash
-    pnpm build
-    ```
-
-    _(This compiles Svelte into static files inside `pb/pb_public`)_
-
-2.  **Compile Go Binary:**
-
-    ```bash
-    cd pb
-    go build -o ../myapp
-    ```
-
-3.  **Deploy:**
-    Upload `myapp` to any VPS (Hetzner/DigitalOcean). Run it. Done.
-    ```bash
-    ./myapp serve
-    ```
-
-## 📜 License
-
-MIT © [Vladimir Beliaev](https://vvbeliaev.cogisoft.dev) from [Cogito Software](https://cogisoft.dev).
-Free to use for personal and commercial projects.
+## Architecture
+The project follows **Hexagonal Architecture** (Ports and Adapters) to isolate business logic from external APIs (Telegram, LLM, DB).
+*   `pb/pkg/collector`: Message ingestion.
+*   `pb/pkg/job`: Vacancy processing and offer generation.
+*   `pb/infra`: Shared global infrastructure.

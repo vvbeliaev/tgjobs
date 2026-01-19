@@ -1,13 +1,12 @@
-package llm
+package out
 
 import (
 	"context"
-	"os"
 
 	openai "github.com/sashabaranov/go-openai"
 )
 
-const OfferSystemPrompt = `
+const offerSystemPrompt = `
 ROLE:
 You are Vladimir Beliaev, a product-minded Full-stack Engineer. You are writing a cold DM on Telegram to a Recruiter or Founder.
 
@@ -52,34 +51,23 @@ OUTPUT FORMAT:
 Return ONLY the raw message text.
 `
 
-// OfferGenerator is the LLM client wrapper for generating personalized job offers.
+// OfferGenerator implements core.OfferGenerator using OpenAI.
 type OfferGenerator struct {
 	client *openai.Client
 	model  string
 }
 
-// NewOfferGenerator creates a new offer generator with the given credentials.
-func NewOfferGenerator(apiKey, baseURL string) *OfferGenerator {
-	if apiKey == "" {
-		apiKey = os.Getenv("OPENAI_API_KEY")
-	}
-	if baseURL == "" {
-		baseURL = os.Getenv("OPENAI_BASE_URL")
-	}
-
-	config := openai.DefaultConfig(apiKey)
-	if baseURL != "" {
-		config.BaseURL = baseURL
-	}
-
+// NewOfferGenerator creates a new offer generator with the given OpenAI client.
+func NewOfferGenerator(client *openai.Client) *OfferGenerator {
 	return &OfferGenerator{
-		client: openai.NewClientWithConfig(config),
+		client: client,
 		model:  "gpt-5.2",
 	}
 }
 
-// GenerateOffer creates a personalized first touch message.
-func (g *OfferGenerator) GenerateOffer(ctx context.Context, cv string, jobDescription string) (string, error) {
+// Generate creates a personalized first touch message.
+// Implements core.OfferGenerator interface.
+func (g *OfferGenerator) Generate(ctx context.Context, cv, jobDescription string) (string, error) {
 	resp, err := g.client.CreateChatCompletion(
 		ctx,
 		openai.ChatCompletionRequest{
@@ -87,7 +75,7 @@ func (g *OfferGenerator) GenerateOffer(ctx context.Context, cv string, jobDescri
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleSystem,
-					Content: OfferSystemPrompt,
+					Content: offerSystemPrompt,
 				},
 				{
 					Role:    openai.ChatMessageRoleUser,

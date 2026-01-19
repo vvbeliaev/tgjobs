@@ -1,6 +1,42 @@
 ---
-globs: *.go
-alwaysApply: false
+description: Backend logic guidelines for Golang Pocketbase Extension (Hexagonal Architecture)
+globs: pb/**/*.go
 ---
 
-All backend logic must be writen in pb/ directory (Golang Pocketbase Extension)
+# Backend Implementation Rules
+
+All backend logic must reside in the `pb/` directory. Follow Hexagonal Architecture (Ports & Adapters) principles.
+
+## 1. Directory Structure
+
+- `pb/config/`: Configuration loading and environment variables.
+- `pb/infra/`: Global infrastructure factories (e.g., base LLM clients, DB connections).
+- `pb/pkg/[module]/`:
+    - `core/`: Domain models, enums, and **Interfaces (Ports)**. Must not depend on other modules or external adapters.
+    - `usecases/`: Business logic implementations. Depends only on `core` interfaces.
+    - `adapters/in/`: Driving adapters (HTTP handlers, PocketBase hooks, Cron jobs).
+    - `adapters/out/`: Driven adapters (implementations of `core` interfaces for external services like LLM, SMS, etc.).
+
+## 2. Core Implementation Rules
+
+- **Ports (Interfaces)**: Define all service interactions via interfaces in `core/ports.go`.
+- **Aggregates**: Wrap `*core.Record` into domain structs in `core/`. Provide state-machine methods (e.g., `job.Complete()`) to manage record state transitions.
+- **Stateless Services**: Use `usecases/` for logic that coordinates multiple aggregates or external adapters.
+
+## 3. Dependency Injection
+
+- **Wiring**: Perform all component instantiation and wiring explicitly in `pb/main.go`.
+- **Avoid Init**: Do not use `func init()` for business logic or dependency setup.
+- **Interfaces**: High-level modules must depend on interfaces from other modules' `core` packages, never on their `usecases` or `adapters`.
+
+## 4. PocketBase Integration
+
+- **Dao usage**: Use `app.Dao()` or `app.FindRecordById` directly within services for data access to avoid redundant repository layers.
+- **Hooks**: Register all system hooks in `adapters/in/hooks.go`.
+- **API**: Register custom routes in `adapters/in/api.go`.
+
+## 5. Coding Standards
+
+- **Concurrency**: Use `context.Context` for all blocking operations and external calls.
+- **Logging**: Use structured logging (e.g., `zap`). Do not use `fmt.Print` for production logs.
+- **Error Handling**: Wrap errors with context (e.g., `fmt.Errorf("doing X: %w", err)`).
