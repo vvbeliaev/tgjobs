@@ -42,15 +42,22 @@ Enter the code from Telegram. This generates `session.json` (git-ignored).
 go run . serve
 ```
 
+### 5. Run SPA frontend
+```bash
+pnpm i && pnpm dev
+```
+
 ## Technologies
 
+*   **Frontend**: Svelte 5 (Runes), Tailwind CSS 4, DaisyUI 5
 *   **Backend**: Go + PocketBase
 *   **Telegram**: `gotd/td` (MTProto)
 *   **AI**: OpenAI API
-*   **Frontend**: Svelte 5 + Tailwind 4 (located in `src/`)
 
-## Architecture
-The project follows **Hexagonal Architecture** (Ports and Adapters) to isolate business logic from external APIs (Telegram, LLM, DB).
-*   `pb/pkg/collector`: Message ingestion.
-*   `pb/pkg/job`: Vacancy processing and offer generation.
-*   `pb/infra`: Shared global infrastructure.
+## Project Structure
+
+- `pb/`: Backend source code (Go).
+- `src/`: Frontend source code (SvelteKit).
+  - `src/lib/shared`: Generic UI components and PocketBase client.
+  - `src/lib/apps`: Feature-specific logic (e.g., `dashboard` for vacancies).
+- `session.json`: Telegram session (generated at runtime, git-ignored).

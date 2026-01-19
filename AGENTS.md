@@ -4,28 +4,32 @@ This document provides context and rules for AI agents working on the JobHunter 
 
 ## Architecture Principles
 
+### Backend (Hexagonal Architecture)
 1. **Hexagonal Architecture**:
-   - `core/`: Domain models and interfaces (Ports). NO dependencies on other packages or external libraries (except basic ones).
+   - `core/`: Domain models and interfaces (Ports). NO dependencies on external libraries.
    - `usecases/`: Business logic implementations. Depends on `core` interfaces.
    - `adapters/in/`: Driving adapters (HTTP handlers, PB hooks, TG listeners).
-   - `adapters/out/`: Driven adapters (LLM implementations, external APIs).
-2. **Dependency Injection**: All dependencies are wired in `pb/main.go`. Avoid using `init()` functions for logic.
-3. **PocketBase Integration**:
-   - We use `app.Dao()` or `app.FindRecordById` directly in services/usecases for simplicity (no repository abstraction unless it becomes a bottleneck).
-   - Domain objects (Aggregates) wrap `*core.Record` to provide business methods.
+   - `adapters/out/`: Driven adapters (implementations of `core` interfaces for external services like LLM).
+2. **Dependency Injection**: All dependencies are wired in `pb/main.go`.
+3. **PocketBase Integration**: Aggregates wrap `*core.Record` to provide business methods.
+
+### Frontend (Svelte 5)
+1. **Svelte 5 Runes**: Always use `$state`, `$derived`, `$effect`. No more `export let` or `writable` stores for component state.
+2. **State Management**: Use `.svelte.ts` classes for complex state (e.g., the job feed).
+3. **Styling**: Tailwind CSS 4 + DaisyUI 5. Prefer utility classes over custom CSS.
+4. **PocketBase Client**: Use the shared client in `src/lib/shared/pb.ts`.
+5. **Types**: Use auto-generated types from `pocketbase-typegen`.
 
 ## Modules
 
-### Collector Module (`pb/pkg/collector`)
-Responsible for ingesting data from external sources (currently Telegram).
-- Depends on `JobService` interface to submit raw findings.
-- Performs fast pre-filtering before calling the Job module.
+### Backend
+- **Collector Module** (`pb/pkg/collector`): Responsible for ingesting data from external sources (Telegram).
+- **Job Module** (`pb/pkg/job`): The core domain (Extraction, Offer Generation).
 
-### Job Module (`pb/pkg/job`)
-The core domain of the application.
-- **Aggregate**: `pkg/job/core/job.go` - handles state transitions (`Raw` -> `Processing` -> `Processed`).
-- **Extraction**: Uses LLM to convert unstructured text into `ParsedData`.
-- **Offer Generation**: Uses LLM to create cold messages based on User's CV.
+### Frontend
+- `src/lib/shared`: Generic UI components, utils, and PB client.
+- `src/lib/apps`: App-specific logic (e.g., `dashboard` for viewing vacancies).
+- `src/routes`: SvelteKit routes.
 
 ## Development Rules
 
