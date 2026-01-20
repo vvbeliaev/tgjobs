@@ -1,4 +1,5 @@
 import { Collections, pb, type JobsResponse } from '$lib';
+
 import { userJobsStore } from './user-jobs.svelte';
 
 class JobsStore {
@@ -9,6 +10,9 @@ class JobsStore {
 	filterRemote: boolean | null = $state(null);
 	filterGrade = $state('');
 	showArchived = $state(false);
+
+	currentPage = $state(1);
+	pageSize = $state(10);
 
 	filteredJobs = $derived.by(() => {
 		let result = this.jobs || [];
@@ -43,6 +47,23 @@ class JobsStore {
 		return result;
 	});
 
+	paginatedJobs = $derived.by(() => {
+		const start = (this.currentPage - 1) * this.pageSize;
+		const end = start + this.pageSize;
+		return this.filteredJobs.slice(start, end);
+	});
+
+	totalPages = $derived(Math.ceil(this.filteredJobs.length / this.pageSize));
+
+	constructor() {
+		$effect.root(() => {
+			$effect(() => {		
+				void [this.search, this.filterRemote, this.filterGrade, this.showArchived];
+				this.currentPage = 1;
+			});
+		});
+	}
+
 	async load(userId: string) {
 		this.userId = userId;
 
@@ -53,9 +74,6 @@ class JobsStore {
 		});
 
 		this.jobs = jobs;
-
-		// Also ensure user jobs are loaded
-		await userJobsStore.load(userId);
 
 		return this.jobs;
 	}
@@ -72,21 +90,14 @@ class JobsStore {
 		return pb.collection(Collections.Jobs).subscribe<JobsResponse>('*', async (e) => {
 			switch (e.action) {
 				case 'create': {
-					if (e.record.status === 'processed') {
-						this.jobs.unshift(e.record);
-					}
 					break;
 				}
 				case 'update': {
-					if (e.record.status === 'processed') {
-						const exists = this.jobs.find((j) => j.id === e.record.id);
-						if (exists) {
-							this.jobs = this.jobs.map((j) => (j.id === e.record.id ? e.record : j));
-						} else {
-							this.jobs.unshift(e.record);
-						}
+					const exists = this.jobs.find((j) => j.id === e.record.id);
+					if (exists) {
+						this.jobs = this.jobs.map((j) => (j.id === e.record.id ? e.record : j));
 					} else {
-						this.jobs = this.jobs.filter((j) => j.id !== e.record.id);
+						this.jobs.unshift(e.record);
 					}
 					break;
 				}
@@ -94,6 +105,9 @@ class JobsStore {
 					this.jobs = this.jobs.filter((j) => j.id !== e.record.id);
 					break;
 			}
+		}, 
+		{
+			filter: `status = "processed" && userId = "${this.userId}"`
 		});
 	}
 
@@ -105,6 +119,7 @@ class JobsStore {
 	clear() {
 		this.jobs = [];
 		this.userId = null;
+		this.currentPage = 1;
 		userJobsStore.clear();
 	}
 }

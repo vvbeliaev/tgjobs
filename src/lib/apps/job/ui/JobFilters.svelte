@@ -33,13 +33,13 @@
 		</div>
 
 		<!-- Filters -->
-		<div class="flex flex-wrap items-center gap-2">
+		<div class="flex flex-wrap items-center gap-2 md:contents">
 			<div class="join w-full md:w-auto">
 				<div class="join-item flex items-center bg-base-200 px-3 opacity-60">
 					<Briefcase size={18} />
 				</div>
 				<select
-					class="select-bordered select join-item min-w-[140px] select-md"
+					class="select-bordered select join-item w-full min-w-[140px] select-md md:w-auto"
 					bind:value={jobsStore.filterGrade}
 				>
 					<option value="">All Grades</option>
@@ -50,34 +50,40 @@
 				</select>
 			</div>
 
-			<div
-				class="flex h-12 items-center gap-3 rounded-lg border border-base-300 bg-base-100 px-4 transition-colors hover:bg-base-200"
-			>
-				<Globe size={18} class="opacity-60" />
-				<span class="text-sm font-medium">Remote</span>
-				<input
-					type="checkbox"
-					class="toggle toggle-primary toggle-sm"
-					checked={jobsStore.filterRemote === true}
-					onchange={(e) => (jobsStore.filterRemote = e.currentTarget.checked ? true : null)}
-				/>
-			</div>
+			<div class="flex flex-1 items-center gap-2 md:flex-initial">
+				<div
+					class="flex h-12 flex-1 items-center justify-between gap-3 rounded-lg border border-base-300 bg-base-100 px-4 transition-colors hover:bg-base-200 md:flex-initial md:justify-start"
+				>
+					<div class="flex items-center gap-3">
+						<Globe size={18} class="opacity-60" />
+						<span class="text-sm font-medium">Remote</span>
+					</div>
+					<input
+						type="checkbox"
+						class="toggle toggle-primary toggle-sm"
+						checked={jobsStore.filterRemote === true}
+						onchange={(e) => (jobsStore.filterRemote = e.currentTarget.checked ? true : null)}
+					/>
+				</div>
 
-			<div
-				class="flex h-12 items-center gap-3 rounded-lg border border-base-300 bg-base-100 px-4 transition-colors hover:bg-base-200"
-			>
-				<Archive size={18} class="opacity-60" />
-				<span class="text-sm font-medium">Archived</span>
-				<input
-					type="checkbox"
-					class="toggle toggle-secondary toggle-sm"
-					bind:checked={jobsStore.showArchived}
-				/>
+				<div
+					class="flex h-12 flex-1 items-center justify-between gap-3 rounded-lg border border-base-300 bg-base-100 px-4 transition-colors hover:bg-base-200 md:flex-initial md:justify-start"
+				>
+					<div class="flex items-center gap-3">
+						<Archive size={18} class="opacity-60" />
+						<span class="text-sm font-medium">Archived</span>
+					</div>
+					<input
+						type="checkbox"
+						class="toggle toggle-secondary toggle-sm"
+						bind:checked={jobsStore.showArchived}
+					/>
+				</div>
 			</div>
 
 			{#if jobsStore.search || jobsStore.filterGrade || jobsStore.filterRemote !== null || jobsStore.showArchived}
 				<button
-					class="btn gap-2 text-error btn-ghost btn-sm"
+					class="btn w-full gap-2 text-error btn-ghost btn-sm md:w-auto"
 					onclick={() => {
 						search = '';
 						jobsStore.filterGrade = '';

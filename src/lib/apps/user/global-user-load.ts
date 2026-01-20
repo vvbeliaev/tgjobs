@@ -1,5 +1,5 @@
 import { Collections, nanoid, pb } from '$lib';
-import { jobsStore } from '$lib/apps/job';
+import { jobsStore, userJobsStore } from '$lib/apps/job';
 
 import { userStore } from './user.svelte';
 
@@ -9,7 +9,10 @@ export async function globalUserLoad() {
 	if (!pb.authStore.isValid) {
 		try {
 			const userAuth = await authGuest();
-			const jobs = await jobsStore.load(userAuth.record.id);
+			const [jobs] = await Promise.all([
+				jobsStore.load(userAuth.record.id),
+				userJobsStore.load(userAuth.record.id)
+			]);
 			return { userAuth, jobs };
 		} catch (error) {
 			console.error(error);
@@ -20,7 +23,10 @@ export async function globalUserLoad() {
 
 	try {
 		const userAuth = await userStore.load();
-		const jobs = await jobsStore.load(userAuth.record.id);
+		const [jobs] = await Promise.all([
+			jobsStore.load(userAuth.record.id),
+			userJobsStore.load(userAuth.record.id)
+		]);
 		return { userAuth, jobs };
 	} catch (error) {
 		console.error(error);

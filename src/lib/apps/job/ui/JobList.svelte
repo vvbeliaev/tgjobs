@@ -2,9 +2,18 @@
 	import { jobsStore } from '../jobs.svelte';
 	import JobCard from './JobCard.svelte';
 	import JobFilters from './JobFilters.svelte';
+	import Pagination from '$lib/shared/ui/Pagination.svelte';
 	import { SearchX, Inbox } from 'lucide-svelte';
 
-	const displayJobs = $derived(jobsStore.filteredJobs.length > 0 ? jobsStore.filteredJobs : []);
+	const displayJobs = $derived(jobsStore.paginatedJobs.length > 0 ? jobsStore.paginatedJobs : []);
+
+	$effect(() => {
+		jobsStore.currentPage;
+		const main = document.querySelector('main');
+		if (main) {
+			main.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+	});
 </script>
 
 <div class="mx-auto max-w-5xl px-4 py-8">
@@ -39,10 +48,16 @@
 			{/each}
 		</div>
 
+		<Pagination
+			currentPage={jobsStore.currentPage}
+			totalPages={jobsStore.totalPages}
+			onPageChange={(p) => (jobsStore.currentPage = p)}
+		/>
+
 		<div class="mt-8 flex items-center justify-center gap-2 text-sm opacity-30">
 			<Inbox size={14} />
-			Showing {displayJobs.length}
-			{displayJobs.length === 1 ? 'job' : 'jobs'}
+			Showing {jobsStore.filteredJobs.length}
+			{jobsStore.filteredJobs.length === 1 ? 'job' : 'jobs'}
 		</div>
 	{/if}
 </div>

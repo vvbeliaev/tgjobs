@@ -97,6 +97,8 @@ export type SuperusersRecord = {
 export enum JobsStatusOptions {
 	"raw" = "raw",
 	"processed" = "processed",
+	"processing" = "processing",
+	"rejected" = "rejected",
 }
 export type JobsRecord<Traw = unknown, Tskills = unknown> = {
 	channelId?: string
